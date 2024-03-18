@@ -10,8 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $admin = Auth::guard('admin')->user();
-        echo 'Welcome' . $admin->name . '<a href="' . route('admin.logout') . '">Logout</a>';
+        return view('admin.dashboard');
+        //     $admin = Auth::guard('admin')->user();
+        //     echo 'Welcome' . $admin->name . '<a href="' . route('admin.logout') . '">Logout</a>';
     }
     public function logout()
     {
