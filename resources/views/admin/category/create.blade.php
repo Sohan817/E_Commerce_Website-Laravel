@@ -33,9 +33,20 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
-                                    <input type="text" name="slug" id="slug" class="form-control"
+                                    <input readonly type="text" name="slug" id="slug" class="form-control"
                                         placeholder="Slug">
                                     <p></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-3">
+                                    <input type="hidden" name="image_id" id="image_id" value="">
+                                    <label for="image">Image</label>
+                                    <div id="image" class="dropzone dz-clickable">
+                                        <div class="dz-message needsclick">
+                                            <br>Drop file here or click to upload. <br> <br>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -120,7 +131,30 @@
                         $('#slug').val(response["slug"]);
                     }
                 }
-            })
+            });
+        });
+
+        //Upload image using dropzone
+        Dropzone.autoDiscover = false;
+        const dropzone = $("#image").dropzone({
+            init: function() {
+                this.on('addedFile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: '{{ route('temp-images.create') }}',
+            maxFiles: 1,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/jpg,image/png/image/gif,image/jpg",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, response) {
+                $("#image_id").val(response.image_id);
+            }
         });
     </script>
 @endsection

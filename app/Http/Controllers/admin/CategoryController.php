@@ -4,8 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+//use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Imagick\Driver;
 
 class CategoryController extends Controller
 {
@@ -34,6 +39,26 @@ class CategoryController extends Controller
             $category->slug = $request->slug;
             $category->status = $request->status;
             $category->save();
+
+            //Save Image here
+            if (!empty($request->image_id)) {
+                $tempImage = TempImage::find($request->image_id);
+                $extArray = explode('.', $tempImage->name);
+                $ext = last($extArray);
+
+                $newImageName = $category->id . '.' . $ext;
+                $sourcePath = public_path('/temp/' . $tempImage->name);
+                $destinationPath = public_path('/uploads/category/' . $newImageName);
+                File::copy($sourcePath, $destinationPath);
+                $category->image = $newImageName;
+                $category->save();
+
+                //Generate Image Thumbnail
+                // $destinationPath = public_path('/uploads/category/thumb/' . $newImageName);
+                // $image = ImageManager::imagick()->read($sourcePath);
+                // $image->resize(450, 600);
+                // $image->save($destinationPath);
+            }
 
             session()->flash('Success', 'Category added successfully');
 
