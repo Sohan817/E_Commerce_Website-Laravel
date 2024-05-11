@@ -28,7 +28,9 @@
                                         <option value="">Select a Category</option>
                                         @if ($categories->isNotEmpty())
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option {{ $subCategory->category_id == $category->id ? 'selected' : '' }}
+                                                    value="{{ $category->id }}">
+                                                    {{ $category->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -39,7 +41,7 @@
                                 <div class="mb-3">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control"
-                                        placeholder="Name">
+                                        placeholder="Name" value="{{ $subCategory->name }}">
                                     <p></p>
                                 </div>
 
@@ -48,7 +50,7 @@
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
                                     <input type="text" name="slug" id="slug" class="form-control"
-                                        placeholder="Slug">
+                                        placeholder="Slug" value="{{ $subCategory->slug }}">
                                     <p></p>
                                 </div>
                             </div>
@@ -56,8 +58,8 @@
                                 <div class="mb-3">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value=1>Active</option>
-                                        <option value=0>Block</option>
+                                        <option {{ $subCategory->status == 1 ? 'selected' : '' }} value=1>Active</option>
+                                        <option {{ $subCategory->status == 0 ? 'selected' : '' }} value=0>Block</option>
                                     </select>
                                     <p></p>
                                 </div>
@@ -66,7 +68,7 @@
                     </div>
                 </div>
                 <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     <a href="{{ route('sub-categories.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </form>
@@ -83,8 +85,8 @@
             var element = $("#subCategoryForm");
             $("button[type=submit]").prop('disabled', true);
             $.ajax({
-                url: "{{ route('sub-categories.store') }}",
-                type: 'post',
+                url: "{{ route('sub-categories.update', $subCategory->id) }}",
+                type: 'put',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response) {
@@ -102,6 +104,10 @@
                             .siblings('p')
                             .removeClass("invalid-feedback").html('');
                     } else {
+                        if (response['notFound'] == true) {
+                            window.location.href = "{{ route('sub-categories.index') }}";
+                            return false;
+                        }
                         var errors = response['errors'];
                         if (errors['name']) {
                             $("#name").addClass('is-invalid')
