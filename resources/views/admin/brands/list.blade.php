@@ -86,7 +86,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="#" onclick= "deleteCategory({{ $brand->id }})"
+                                            <a href="#" onclick= "deleteBrand({{ $brand->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -131,7 +131,7 @@
 
 @section('customjs')
     <script>
-        function deleteCategory(id) {
+        function deleteBrand(id) {
             var url = "{{ route('brandss.delete', 'ID') }}";
             var newUrl = url.replace("ID", id);
 
