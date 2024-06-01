@@ -8,10 +8,7 @@ use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
-//use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Drivers\Imagick\Driver;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
+use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
@@ -49,18 +46,16 @@ class CategoryController extends Controller
 
                 $newImageName = $category->id . '.' . $ext;
                 $sourcePath = public_path('/temp/' . $tempImage->name);
-                $destinationPath = public_path('/uploads/category/' . $newImageName);
+                $destinationPath = public_path() . '/uploads/category/' . $newImageName;
                 File::copy($sourcePath, $destinationPath);
-                $category->image = $newImageName;
-                $category->save();
 
                 //Generate Image Thumbnail
-                // $destinationPath = public_path('/uploads/category/thumb/' . $newImageName);
-                // $image = ImageManager::imagick()->read($sourcePath);
-                // $image->resize(450, 600);
-                // $image->save($destinationPath);
-                // $category->image = $newImageName;
-                // $category->save();
+                $destinationPath = public_path() . '/uploads/category/thumb/' . $newImageName;
+                $image = Image::make($sourcePath);
+                $image->resize(450, 600);
+                $image->save($destinationPath);
+                $category->image = $newImageName;
+                $category->save();
             }
 
             session()->flash('Success', 'Category added successfully');
@@ -118,18 +113,18 @@ class CategoryController extends Controller
                 $sourcePath = public_path('/temp/' . $tempImage->name);
                 $destinationPath = public_path('/uploads/category/' . $newImageName);
                 File::copy($sourcePath, $destinationPath);
-                $category->image = $newImageName;
-                $category->save();
 
                 //Delete old image
                 File::delete(public_path('/uploads/category/' . $oldImage));
                 File::delete(public_path('/uploads/category/' . $tempImage->name));
 
                 //Generate Image Thumbnail
-                // $destinationPath = public_path('/uploads/category/thumb/' . $newImageName);
-                // $image = ImageManager::imagick()->read($sourcePath);
-                // $image->resize(450, 600);
-                // $image->save($destinationPath);
+                $destinationPath = public_path() . '/uploads/category/thumb/' . $newImageName;
+                $image = Image::make($sourcePath);
+                $image->resize(450, 600);
+                $image->save($destinationPath);
+                $category->image = $newImageName;
+                $category->save();
             }
 
             session()->flash('Success', 'Category updated successfully');
@@ -156,6 +151,7 @@ class CategoryController extends Controller
                 'message' => "Category not found",
             ]);
         }
+        File::delete(public_path('/uploads/category/thumb/' . $category->image));
         File::delete(public_path('/uploads/category/' . $category->image));
 
         $category->delete();
