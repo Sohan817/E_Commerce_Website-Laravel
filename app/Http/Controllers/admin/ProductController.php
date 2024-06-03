@@ -16,13 +16,16 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        // $categories = Product::latest();
-        // if (!empty($request->get('keyword'))) {
-        //     $categories = $categories->where('name', 'like', '%' . $request->get('keyword') . '%');
-        // }
-        // $categories = $categories->paginate(10);
-        // return view('admin.category.list', compact('categories'));
+        $products = Product::latest('id')->with('product_images');
+        if (!empty($request->get('keyword'))) {
+            $products = $products->where('title', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $products = $products->paginate(10);
+        $data['products'] = $products;
+        return view('admin.products.list', $data);
     }
+
+    //Create Products
     public function create()
     {
         $data = [];
@@ -32,6 +35,8 @@ class ProductController extends Controller
         $data['brands']  = $brands;
         return view('admin.products.create', $data);
     }
+
+    //Store Products
     public function store(Request $request)
     {
         $rules = [
@@ -87,7 +92,7 @@ class ProductController extends Controller
 
                     //Large Image
                     $sourcePath = public_path() . '/temp/' . $tempImageInfo->name;
-                    $destinationPath = public_path() . '/uploads/products/largeImage/' . $tempImageInfo->name;
+                    $destinationPath = public_path() . '/uploads/products/largeImage/' . $imageName;
                     $image = Image::make($sourcePath);
                     $image->resize(1400, null, function ($constraint) {
                         $constraint->aspectRatio();
@@ -95,7 +100,7 @@ class ProductController extends Controller
                     $image->save($destinationPath);
 
                     //Small Image
-                    $destinationPath = public_path() . '/uploads/products/smallImage/' . $tempImageInfo->name;
+                    $destinationPath = public_path() . '/uploads/products/smallImage/' . $imageName;
                     $image = Image::make($sourcePath);
                     $image->fit(300, 300);
                     $image->save($destinationPath);
