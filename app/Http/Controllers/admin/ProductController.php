@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -112,6 +113,83 @@ class ProductController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Product added successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+    public function edit($productId, Request $request)
+    {
+        $product = Product::find($productId);
+        if (empty($product)) {
+            return redirect()->route('products.index')->with('Fail', 'Product not found');
+        }
+
+        //Fetch Product Image
+        $productImages = ProductImage::where('product_id', $product->id)->get();
+
+        $subCategories = SubCategory::where('category_id', $product->category_id)->get();
+
+        $data = [];
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $brands = Brand::orderBy('name', 'ASC')->get();
+        $data['product']  = $product;
+        $data['subCategories']  = $subCategories;
+        $data['productImages']  = $productImages;
+        $data['categories']  = $categories;
+        $data['brands']  = $brands;
+        return view('admin.products.edit', $data);
+    }
+    public function update($id, Request $request)
+    {
+        $product = Product::find($id);
+
+        if (empty($product)) {
+            session()->flash('Fail', 'Product not found');
+            return response()->json([
+                'status' => false,
+                'notFound' => true,
+                'message' => 'Product not found',
+            ]);
+        }
+        $rules = [
+            'title' => 'required',
+            'slug' => 'required | unique:products,slug,' . $product->id . ',id',
+            'price' => 'required | numeric',
+            'sku' => 'required | unique:products,sku,' . $product->id . ',id',
+            'track_quantity' => 'required | in:Yes,No',
+            'category' => 'required | numeric',
+            'is_featured' => 'required | in:Yes,No',
+        ];
+        if (!empty($request->track_quantity) && $request->track_quantity == "Yes") {
+            $rules['quantity'] = 'required | numeric';
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->passes()) {
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->compare_price;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_quantity = $request->track_quantity;
+            $product->quantity = $request->quantity;
+            $product->status = $request->status;
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->sub_category;
+            $product->brand_id = $request->brand_id;
+            $product->is_featured = $request->is_featured;
+            $product->save();
+
+            session()->flash('Success', 'Product updated successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Product updated successfully',
             ]);
         } else {
             return response()->json([
