@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
@@ -143,6 +144,8 @@ class ProductController extends Controller
         $data['brands']  = $brands;
         return view('admin.products.edit', $data);
     }
+
+    //Update product
     public function update($id, Request $request)
     {
         $product = Product::find($id);
@@ -197,5 +200,38 @@ class ProductController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+    }
+
+    //Delete Product
+    public function destroy($productId, Request $request)
+    {
+        $product = Product::find($productId);
+
+        if (empty($product)) {
+            session()->flash('Fail', 'Product not found');
+            return response()->json([
+                'status' => false,
+                'notFound' => true,
+            ]);
+        }
+
+        $productImages = ProductImage::where('product_id', $productId)->get();
+
+        if (!empty($productImages)) {
+            foreach ($productImages as $productImage) {
+                File::delete(public_path('/uploads/products/largeImage/' . $productImage->image));
+                File::delete(public_path('/uploads/products/smallImage/' . $productImage->image));
+            }
+            ProductImage::where('product_id', $productId)->delete();
+        }
+
+        $product->delete();
+
+        session()->flash('Success', 'Product deleted successfully');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully',
+        ]);
     }
 }

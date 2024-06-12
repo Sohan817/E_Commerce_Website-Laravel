@@ -60,7 +60,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
         Route::get('/brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
         Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
-        Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brandss.delete');
+        Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brands.delete');
 
         //Product Routes
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -71,6 +71,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');
         Route::delete('/product-images', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
 
 
 

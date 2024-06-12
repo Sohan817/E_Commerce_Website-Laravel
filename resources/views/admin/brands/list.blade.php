@@ -132,7 +132,7 @@
 @section('customjs')
     <script>
         function deleteBrand(id) {
-            var url = "{{ route('brandss.delete', 'ID') }}";
+            var url = "{{ route('brands.delete', 'ID') }}";
             var newUrl = url.replace("ID", id);
 
             if (confirm("Do you want to delete?")) {
