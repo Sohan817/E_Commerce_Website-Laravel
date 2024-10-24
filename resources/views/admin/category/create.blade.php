@@ -44,7 +44,7 @@
                                     <label for="image">Image</label>
                                     <div id="image" class="dropzone dz-clickable">
                                         <div class="dz-message needsclick">
-                                            <br>Drop file here or click to upload. <br> <br>
+                                            <br>Drop file here or click to upload. <br>
                                         </div>
                                     </div>
                                 </div>
@@ -55,6 +55,15 @@
                                     <select name="status" id="status" class="form-control">
                                         <option value=1>Active</option>
                                         <option value=0>Block</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="showHome">Show on Home</label>
+                                    <select name="showHome" id="showHome" class="form-control">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -148,7 +157,7 @@
             maxFiles: 1,
             paramName: 'image',
             addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/jpg,image/png/image/gif,image/jpg",
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

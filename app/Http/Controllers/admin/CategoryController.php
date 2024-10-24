@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CategoryController extends Controller
 {
@@ -36,6 +36,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
             $category->save();
 
             //Save Image here
@@ -50,10 +51,11 @@ class CategoryController extends Controller
                 File::copy($sourcePath, $destinationPath);
 
                 //Generate Image Thumbnail
-                $destinationPath = public_path() . '/uploads/category/thumb/' . $newImageName;
-                $image = Image::make($sourcePath);
-                $image->resize(450, 600);
-                $image->save($destinationPath);
+                $manager = new ImageManager(new Driver());
+                $destPath = public_path() . '/uploads/category/thumb/' . $newImageName;
+                $image = $manager->read($sourcePath);
+                $image->cover(450, 600);
+                $image->save($destPath);
                 $category->image = $newImageName;
                 $category->save();
             }
@@ -99,6 +101,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
             $category->save();
 
             $oldImage = $category->image;
@@ -119,9 +122,10 @@ class CategoryController extends Controller
                 File::delete(public_path('/uploads/category/' . $tempImage->name));
 
                 //Generate Image Thumbnail
+                $manager = new ImageManager(new Driver());
                 $destinationPath = public_path() . '/uploads/category/thumb/' . $newImageName;
-                $image = Image::make($sourcePath);
-                $image->resize(450, 600);
+                $image = $manager->read($sourcePath);
+                $image->cover(450, 600);
                 $image->save($destinationPath);
                 $category->image = $newImageName;
                 $category->save();

@@ -12,7 +12,8 @@ use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
@@ -93,18 +94,18 @@ class ProductController extends Controller
                     //Generate Image Thumbnail
 
                     //Large Image
+                    $manager = new ImageManager(new Driver());
                     $sourcePath = public_path() . '/temp/' . $tempImageInfo->name;
                     $destinationPath = public_path() . '/uploads/products/largeImage/' . $imageName;
-                    $image = Image::make($sourcePath);
-                    $image->resize(1400, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+                    $image = $manager->read($sourcePath);
+                    $image->scaleDown(1400);
                     $image->save($destinationPath);
 
                     //Small Image
                     $destinationPath = public_path() . '/uploads/products/smallImage/' . $imageName;
-                    $image = Image::make($sourcePath);
-                    $image->fit(300, 300);
+                    $manager = new ImageManager(new Driver());
+                    $image = $manager->read($sourcePath);
+                    $image->cover(300,300);
                     $image->save($destinationPath);
                 }
             }
