@@ -297,7 +297,7 @@
             maxFiles: 10,
             paramName: 'image',
             addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/jpg,image/png/image/gif,image/jpg",
+            acceptedFiles: "image/jpeg,image/jpg,image/png/image/gif,image/avif",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
