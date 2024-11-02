@@ -55,7 +55,7 @@ class ShopController extends Controller
         } else {
             $products = $products->orderBy('id', 'DESC');
         }
-        $products = $products->get();
+        $products = $products->paginate(6);
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
@@ -67,5 +67,14 @@ class ShopController extends Controller
         $data['priceMin'] = intval($request->get('price_min'));
         $data['sort'] = $request->get('sort');
         return view('front.shop', $data);
+    }
+    public function product($slug)
+    {
+        $product = Product::where('slug', $slug)->with('product_images')->first();
+        if ($product == null) {
+            abort(404);
+        }
+        $data['product'] = $product;
+        return view('front.product', $data);
     }
 }

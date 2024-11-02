@@ -144,7 +144,11 @@
                                 </div>
                             @endforeach
                         @endif
+                        <div class = "cl-md-12 pt-5">
+                            {{ $products->withQueryString()->links() }}
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

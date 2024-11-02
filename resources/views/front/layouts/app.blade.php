@@ -105,7 +105,8 @@
                                         <ul class="dropdown-menu dropdown-menu-dark">
                                             @foreach ($category->sub_category as $suCategory)
                                                 <li><a class="dropdown-item nav-link"
-                                                        href="#">{{ $suCategory->name }}</a></li>
+                                                        href="{{ route('front.shop', [$category->slug, $suCategory->slug]) }}">{{ $suCategory->name }}</a>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     @endif

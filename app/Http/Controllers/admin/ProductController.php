@@ -61,7 +61,9 @@ class ProductController extends Controller
             $product = new Product();
             $product->title = $request->title;
             $product->slug = $request->slug;
+            $product->short_description = $request->short_description;
             $product->description = $request->description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
@@ -105,7 +107,7 @@ class ProductController extends Controller
                     $destinationPath = public_path() . '/uploads/products/smallImage/' . $imageName;
                     $manager = new ImageManager(new Driver());
                     $image = $manager->read($sourcePath);
-                    $image->cover(300,300);
+                    $image->cover(300, 300);
                     $image->save($destinationPath);
                 }
             }
@@ -175,7 +177,9 @@ class ProductController extends Controller
         if ($validator->passes()) {
             $product->title = $request->title;
             $product->slug = $request->slug;
+            $product->short_description = $request->short_description;
             $product->description = $request->description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
