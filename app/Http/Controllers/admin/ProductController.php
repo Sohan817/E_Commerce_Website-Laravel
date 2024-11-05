@@ -64,6 +64,7 @@ class ProductController extends Controller
             $product->short_description = $request->short_description;
             $product->description = $request->description;
             $product->shipping_returns = $request->shipping_returns;
+            $product->related_products = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
@@ -137,6 +138,13 @@ class ProductController extends Controller
 
         $subCategories = SubCategory::where('category_id', $product->category_id)->get();
 
+        //Fetch related products
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productsArray = explode(',', $product->related_products);
+            $relatedProducts = Product::whereIn('id', $productsArray)->get();
+        }
+
         $data = [];
         $categories = Category::orderBy('name', 'ASC')->get();
         $brands = Brand::orderBy('name', 'ASC')->get();
@@ -145,6 +153,7 @@ class ProductController extends Controller
         $data['productImages']  = $productImages;
         $data['categories']  = $categories;
         $data['brands']  = $brands;
+        $data['relatedProducts']  = $relatedProducts;
         return view('admin.products.edit', $data);
     }
 
@@ -180,6 +189,7 @@ class ProductController extends Controller
             $product->short_description = $request->short_description;
             $product->description = $request->description;
             $product->shipping_returns = $request->shipping_returns;
+            $product->related_products = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
@@ -237,6 +247,24 @@ class ProductController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Product deleted successfully',
+        ]);
+    }
+
+    //Related Products
+    public function getProducts(Request $request)
+    {
+        $temProducts = [];
+        if ($request->term != "") {
+            $products = Product::where('title', 'like', '%' . $request->term . '%')->get();
+            if ($products != null) {
+                foreach ($products as $product) {
+                    $temProducts[] = array('id' => $product->id, 'text' => $product->title);
+                }
+            }
+        }
+        return response()->json([
+            'tags' => $temProducts,
+            'status' => true
         ]);
     }
 }

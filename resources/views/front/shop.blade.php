@@ -114,7 +114,7 @@
                                 <div class="col-md-4">
                                     <div class="card product-card">
                                         <div class="product-image position-relative">
-                                            <a href="#" class="product-img">
+                                            <a href="{{ route('front.product', $product->slug) }}" class="product-img">
                                                 @if (!empty($productImage->image))
                                                     <img class="card-img-top"
                                                         src="{{ asset('uploads/products/smallImage/' . $productImage->image) }}">
@@ -133,10 +133,10 @@
                                         <div class="card-body text-center mt-3">
                                             <a class="h6 link" href="product.php">{{ $product->title }}</a>
                                             <div class="price mt-2">
-                                                <span class="h5"><strong>{{ $product->price }}</strong></span>
+                                                <span class="h5"><strong>${{ $product->price }}</strong></span>
                                                 @if ($product->compare_price > 0)
                                                     <span
-                                                        class="h6 text-underline"><del>{{ $product->compare_price }}</del></span>
+                                                        class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
                                                 @endif
                                             </div>
                                         </div>
