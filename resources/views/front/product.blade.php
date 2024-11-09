@@ -55,7 +55,8 @@
                         @endif
                         <h2 class="price ">${{ $product->price }}</h2>
                         {!! $product->short_description !!}
-                        <a href="cart.php" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                        <a href="javascript:void(0);" onClick ="addToCart({{ $product->id }});" class="btn btn-dark"><i
+                                class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
                     </div>
                 </div>
 
@@ -125,7 +126,8 @@
                                         @endif
                                     </a>
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
+                                        <a class="btn btn-dark" href="javascript:void(0);"
+                                            onClick ="addToCart({{ $product->id }});">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>
                                     </div>
