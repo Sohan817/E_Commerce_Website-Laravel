@@ -2,6 +2,10 @@
 <html class="no-js" lang="en_AU" />
 
 <head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Online Shop</title>
     <meta name="description" content="" />
@@ -10,7 +14,6 @@
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="pinterest" content="nopin" />
-
     <meta property="og:locale" content="en_AU" />
     <meta property="og:type" content="website" />
     <meta property="fb:admins" content="" />
@@ -55,7 +58,7 @@
         <div class="container">
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
-                    <a href="index.php" class="text-decoration-none">
+                    <a href="{{ route('front.home') }}" class="text-decoration-none">
                         <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
                     </a>
@@ -117,7 +120,7 @@
                         @endif
                 </div>
                 <div class="right-nav py-0">
-                    <a href="cart.php" class="ml-3 d-flex pt-2">
+                    <a href="{{ route('front.cart') }}" class="ml-3 d-flex pt-2">
                         <i class="fas fa-shopping-cart text-primary"></i>
                     </a>
                 </div>
