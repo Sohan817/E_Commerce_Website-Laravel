@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,8 +46,12 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/register', [AuthController::class, 'register'])->name('user_account.register');
         Route::post('/register-process', [AuthController::class, 'registerProcess'])->name('user_account.registerProcess');
         Route::get('/login', [AuthController::class, 'login'])->name('user_account.login');
+        Route::post('/login-process', [AuthController::class, 'authenticate'])->name('user_account.loginProcess');
     });
-    Route::group(['middleware' => 'auth'], function () {});
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/profile', [AuthController::class, 'profile'])->name('user_account.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('user_account.logout');
+    });
 });
 
 Route::get('/test', [CategoryController::class, 'test']);

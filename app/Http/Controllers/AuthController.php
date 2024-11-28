@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login()
-    {
-        return view('front.user_account.login');
-    }
+
+    //User registration
     public function register()
     {
         return view('front.user_account.register');
@@ -43,5 +42,44 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+    }
+
+    //User login
+    public function login()
+    {
+        return view('front.user_account.login');
+    }
+
+    public function authenticate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        if ($validator->passes()) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+                return redirect()->route('user_account.profile');
+            } else {
+                return redirect()->route('user_account.login')
+                    ->withInput($request->only('email'))
+                    ->with('Fail', 'Your email or password is incorrect');
+            }
+        } else {
+            return redirect()
+                ->route('user_account.login')
+                ->withErrors($validator)
+                ->withInput($request->only('email'));
+        }
+    }
+
+    //User profile
+    public function profile()
+    {
+        return view('front.user_account.profile');
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('user_account.login');
     }
 }

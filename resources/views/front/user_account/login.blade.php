@@ -9,6 +9,14 @@
             });
         </script>
     @endif
+    @if (Session::has('Fail'))
+        <div class = "col-md-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {!! Session::get('Fail') !!}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" area-label = "Close"></button>
+            </div>
+        </div>
+    @endif
     <section class="section-5 pt-3 pb-3 mb-3 bg-white">
         <div class="container">
             <div class="light-font">
@@ -23,20 +31,30 @@
     <section class=" section-10">
         <div class="container">
             <div class="login-form">
-                <form action="/examples/actions/confirmation.php" method="post">
+                <form action="{{ route('user_account.loginProcess') }}" method="post">
+                    @csrf
                     <h4 class="modal-title">Login to Your Account</h4>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Email" required="required">
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" placeholder="Email"
+                            name="email" value="{{ old('email') }}">
+                        @error('email')
+                            <p class="invalid-feedback">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" required="required">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            placeholder="Password" name="password">
+                        @error('password')
+                            <p class="invalid-feedback">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group small">
                         <a href="#" class="forgot-link">Forgot Password?</a>
                     </div>
                     <input type="submit" class="btn btn-dark btn-block btn-lg" value="Login">
                 </form>
-                <div class="text-center small">Don't have an account? <a href="register.php">Sign up</a></div>
+                <div class="text-center small">Don't have an account? <a href="{{ route('user_account.register') }}">Sign
+                        up</a></div>
             </div>
         </div>
     </section>
