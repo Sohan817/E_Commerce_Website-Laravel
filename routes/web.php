@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
@@ -40,8 +41,19 @@ Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('front.ad
 Route::post('update_cart', [CartController::class, 'updateCart'])->name('front.update_cart');
 Route::post('delete_item', [CartController::class, 'deleteItem'])->name('front.delete_item');
 
+//User Auth routes
+Route::group(['prefix' => 'user'], function () {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/register', [AuthController::class, 'register'])->name('user_account.register');
+        Route::post('/register-process', [AuthController::class, 'registerProcess'])->name('user_account.registerProcess');
+        Route::get('/login', [AuthController::class, 'login'])->name('user_account.login');
+    });
+    Route::group(['middleware' => 'auth'], function () {});
+});
 
 Route::get('/test', [CategoryController::class, 'test']);
+
+//Admin auth routes
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin.guest'], function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
