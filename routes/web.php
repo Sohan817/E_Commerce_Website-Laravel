@@ -39,6 +39,8 @@ Route::get('cart', [CartController::class, 'cart'])->name('front.cart');
 Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('front.addToCart');
 Route::post('update_cart', [CartController::class, 'updateCart'])->name('front.update_cart');
 Route::post('delete_item', [CartController::class, 'deleteItem'])->name('front.delete_item');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
+
 
 //User Auth routes
 Route::group(['prefix' => 'user'], function () {
