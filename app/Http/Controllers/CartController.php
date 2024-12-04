@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Termwind\Components\Dd;
 
 class CartController extends Controller
@@ -139,5 +140,28 @@ class CartController extends Controller
         $countries = Country::orderBy('name', 'ASC')->get();
         $data['countries'] = $countries;
         return view('front.checkout', $data);
+    }
+    public function processCheckout(Request $request)
+    {
+        //Apply validation
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'country' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'mobile' => 'required',
+        ]);
+        if ($validator->passes()) {
+        } else {
+            return response()->json([
+                'message' => 'Please fix the error',
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 }
