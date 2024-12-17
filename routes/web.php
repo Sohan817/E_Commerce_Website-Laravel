@@ -41,6 +41,7 @@ Route::post('update_cart', [CartController::class, 'updateCart'])->name('front.u
 Route::post('delete_item', [CartController::class, 'deleteItem'])->name('front.delete_item');
 Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
 Route::post('/process_checkout', [CartController::class, 'processCheckout'])->name('front.process_checkout');
+Route::get('/thanks/{orderId}', [CartController::class, 'thankYou'])->name('front.thanks');
 
 
 //User Auth routes

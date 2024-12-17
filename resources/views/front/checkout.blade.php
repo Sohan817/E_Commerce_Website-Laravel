@@ -27,14 +27,16 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <input type="text" name="first_name" id="first_name" class="form-control"
-                                                placeholder="First Name">
+                                                placeholder="First Name"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->first_name : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <input type="text" name="last_name" id="last_name" class="form-control"
-                                                placeholder="Last Name">
+                                                placeholder="Last Name"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->last_name : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
@@ -42,18 +44,21 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <input type="text" name="email" id="email" class="form-control"
-                                                placeholder="Email">
+                                                placeholder="Email"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->email : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <select name="country" id="country" class="form-control">
+                                            <select name="country_id" id="country_id" class="form-control">
                                                 <option value="">Select a Country</option>
                                                 @if (!empty($countries))
                                                     @foreach ($countries as $country)
-                                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                        <option
+                                                            {{ !empty($customerAddress) && $customerAddress->country_id == $country->id ? 'selected' : '' }}
+                                                            value="{{ $country->id }}">{{ $country->name }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -64,22 +69,24 @@
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <textarea name="address" id="address" cols="30" rows="3" placeholder="Address" class="form-control"></textarea>
+                                            <textarea name="address" id="address" cols="30" rows="3" placeholder="Address" class="form-control">{{ !empty($customerAddress) ? $customerAddress->address : '' }}</textarea>
+                                            <p></p>
                                         </div>
-                                        <p></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <input type="text" name="appartment" id="appartment" class="form-control"
-                                                placeholder="Apartment, suite, unit, etc. (optional)">
+                                            <input type="text" name="apartment" id="apartment" class="form-control"
+                                                placeholder="Apartment, suite, unit, etc. (optional)"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->apartment : '' }}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <input type="text" name="city" id="city" class="form-control"
-                                                placeholder="City">
+                                                placeholder="City"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->city : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
@@ -87,7 +94,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <input type="text" name="state" id="state" class="form-control"
-                                                placeholder="State">
+                                                placeholder="State"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->state : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
@@ -95,7 +103,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <input type="text" name="zip" id="zip" class="form-control"
-                                                placeholder="Zip">
+                                                placeholder="Zip"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->zip : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
@@ -103,7 +112,8 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <input type="text" name="mobile" id="mobile" class="form-control"
-                                                placeholder="Mobile No.">
+                                                placeholder="Mobile No."
+                                                value="{{ !empty($customerAddress) ? $customerAddress->mobile : '' }}">
                                             <p></p>
                                         </div>
                                     </div>
@@ -207,6 +217,7 @@
         });
         $("#orderForm").submit(function(evnt) {
             event.preventDefault();
+            $('button[type = "submit"]').prop('disabled', true);
             $.ajax({
                 url: '{{ route('front.process_checkout') }}',
                 type: 'post',
@@ -214,12 +225,82 @@
                 dataType: 'json',
                 success: function(response) {
                     var errors = response.errors;
-                    if (errors.first_name) {
-                        $("#first_name").addClass('is-invalid').siblings("p").addClass(
-                            "invalid-feedback").html(errors
-                            .first_name);
+                    $('button[type = "submit"]').prop('disabled', false);
+                    if (response.status == false) {
+                        if (errors.first_name) {
+                            $("#first_name").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .first_name);
+                        } else {
+                            $("#first_name").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.last_name) {
+                            $("#last_name").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .last_name);
+                        } else {
+                            $("#last_name").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.email) {
+                            $("#email").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .email);
+                        } else {
+                            $("#email").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.country_id) {
+                            $("#country_id").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .country_id);
+                        } else {
+                            $("#country_id").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.address) {
+                            $("#address").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .address);
+                        } else {
+                            $("#address").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.city) {
+                            $("#city").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .city);
+                        } else {
+                            $("#city").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.state) {
+                            $("#state").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .state);
+                        } else {
+                            $("#state").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.zip) {
+                            $("#zip").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .zip);
+                        } else {
+                            $("#zip").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
+                        if (errors.mobile) {
+                            $("#mobile").addClass('is-invalid').siblings("p").addClass(
+                                "invalid-feedback").html(errors
+                                .mobile);
+                        } else {
+                            $("#mobile").removeClass('is-invalid').siblings("p").removeClass(
+                                "invalid-feedback").html('');
+                        }
                     } else {
-                        $("#first_name").siblings("p").removeClass("invalid-feedback").html();
+                        window.location.href = "{{ url('/thanks/') }}/" + response.orderId;
                     }
                 }
             });
