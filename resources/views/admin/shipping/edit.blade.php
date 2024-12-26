@@ -25,13 +25,6 @@
                     </div>
                 </div>
             @endif
-            @if (Session::has('Fail'))
-                <div class = "col-md-12">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {!! Session::get('Fail') !!}
-                    </div>
-                </div>
-            @endif
             <form action="" method="post" id="shippingForm" name="shippingForm">
                 <div class="card">
                     <div class="card-body">
@@ -42,57 +35,28 @@
                                         <option value="">Select a Country</option>
                                         @if (!empty($countries))
                                             @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                <option {{ $shippingCharge->country_id == $country->id ? 'selected' : '' }}
+                                                    value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
-                                            <option value="rest_of_world">Rest of the world</option>
+                                            <option {{ $shippingCharge->country_id == 'rest_of_world' ? 'selected' : '' }}
+                                                value="rest_of_world">Rest of the world</option>
                                         @endif
                                     </select>
                                     <p></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" name="amount" id="amount" class="form-control"
-                                    placeholder="Amount">
+                                <input type="text" value="{{ $shippingCharge->amount }}" name="amount" id="amount"
+                                    class="form-control" placeholder="Amount">
                                 <p></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="card">
-                <div class="card-body">
-                    <div class= "row">
-                        <div class="col-md-12">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                                @if ($shippingCharges->isNotEmpty())
-                                    @foreach ($shippingCharges as $shippingCharge)
-                                        <tr>
-                                            <td>{{ $shippingCharge->id }}</td>
-                                            <td>{{ $shippingCharge->country_id == 'rest_of_world' ? 'Rest of the World' : $shippingCharge->name }}
-                                            </td>
-                                            <td>{{ $shippingCharge->amount }}</td>
-                                            <td>
-                                                <a href="{{ route('shipping.edit', $shippingCharge->id) }}"
-                                                    class="btn btn-primary">Edit</a>
-                                                <a href="#" class="btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- /.card -->
     </section>
@@ -107,8 +71,8 @@
             var element = $(this);
             $("button[type=submit]").prop('disabled', true);
             $.ajax({
-                url: "{{ route('shipping.store') }}",
-                type: 'post',
+                url: "{{ route('shipping.update', $shippingCharge->id) }}",
+                type: 'put',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response) {
