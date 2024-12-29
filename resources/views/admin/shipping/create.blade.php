@@ -79,7 +79,7 @@
                                             <td>{{ $shippingCharge->id }}</td>
                                             <td>{{ $shippingCharge->country_id == 'rest_of_world' ? 'Rest of the World' : $shippingCharge->name }}
                                             </td>
-                                            <td>{{ $shippingCharge->amount }}</td>
+                                            <td>${{ $shippingCharge->amount }}</td>
                                             <td>
                                                 <a href="{{ route('shipping.edit', $shippingCharge->id) }}"
                                                     class="btn btn-primary">Edit</a>
