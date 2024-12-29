@@ -60,12 +60,21 @@ class ShippingController extends Controller
     }
     public function update($id, Request $request)
     {
+        $shipping = ShippingCharge::find($id);
         $Validator = Validator::make($request->all(), [
             'country_id' => 'required',
             'amount' => 'required|numeric'
         ]);
         if ($Validator->passes()) {
-            $shipping = ShippingCharge::find($id);
+
+            if ($shipping == null) {
+
+                session()->flash('Fail', "Shipping not found");
+
+                return response()->json([
+                    'status' => true,
+                ]);
+            }
             $shipping->country_id = $request->country_id;
             $shipping->amount = $request->amount;
             $shipping->save();
@@ -81,5 +90,25 @@ class ShippingController extends Controller
                 'errors' => $Validator->errors()
             ]);
         }
+    }
+    public function destroy($id)
+    {
+        $shippingCharge = ShippingCharge::find($id);
+
+        if ($shippingCharge == null) {
+
+            session()->flash('Fail', "Shipping not found");
+
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+        $shippingCharge->delete();
+
+        session()->flash('Success', "Shipping deleted successfully");
+
+        return response()->json([
+            'status' => true,
+        ]);
     }
 }

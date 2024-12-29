@@ -83,7 +83,9 @@
                                             <td>
                                                 <a href="{{ route('shipping.edit', $shippingCharge->id) }}"
                                                     class="btn btn-primary">Edit</a>
-                                                <a href="#" class="btn btn-danger">Delete</a>
+                                                <a href="javascript:void(0);"
+                                                    onclick= "deleteShipping({{ $shippingCharge->id }})"
+                                                    class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -142,5 +144,27 @@
                 }
             })
         });
+
+        //Shipping Delete
+        function deleteShipping(id) {
+            var url = "{{ route('shipping.delete', 'ID') }}";
+            var newUrl = url.replace("ID", id);
+            if (confirm("Do you want to delete?")) {
+                $.ajax({
+                    url: newUrl,
+                    type: 'delete',
+                    data: {},
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response['status']) {
+                            window.location.href = "{{ route('shipping.create') }}"
+                        }
+                    }
+                });
+            }
+        }
     </script>
 @endsection
