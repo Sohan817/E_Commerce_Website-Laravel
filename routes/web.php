@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
@@ -114,6 +115,16 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/shipping/{id}', [ShippingController::class, 'edit'])->name('shipping.edit');
         Route::put('/shipping/{id}', [ShippingController::class, 'update'])->name('shipping.update');
         Route::delete('/shipping/{id}', [ShippingController::class, 'destroy'])->name('shipping.delete');
+
+        //Discount Coupon code Routes
+        // Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/coupon/create', [DiscountCouponController::class, 'create'])->name('coupon.create');
+        // Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+        // Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        // Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        // Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
+        // Route::post('/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
+
 
 
         Route::get('/getSlug', function (Request $request) {
