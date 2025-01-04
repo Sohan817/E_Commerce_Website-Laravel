@@ -26,7 +26,7 @@
                                 <div class="mb-3">
                                     <label for="code">Code</label>
                                     <input type="text" name="code" id="code" class="form-control"
-                                        placeholder="code">
+                                        placeholder="Code">
                                     <p></p>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="expires_at">Expires At</label>
-                                    <input type="number" name="expires_at" id="expires_at" class="form-control"
+                                    <input type="text" name="expires_at" id="expires_at" class="form-control"
                                         placeholder="Expires At">
                                     <p></p>
                                 </div>
@@ -135,87 +135,80 @@
                 format: 'Y-m-d H:i:s',
             });
         });
+
         //Form validation using ajax
         $("#couponCodeForm").submit(function(event) {
             event.preventDefault();
             var element = $(this);
             $("button[type=submit]").prop('disabled', true);
             $.ajax({
-                url: "{{ route('categories.store') }}",
+                url: "{{ route('coupon.store') }}",
                 type: 'post',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response) {
                     $("button[type=submit]").prop('disabled', false);
+
                     if (response['status'] == true) {
-                        window.location.href = "{{ route('categories.index') }}"
-                        $("#name").removeClass('is-invalid')
+
+                        window.location.href = "{{ route('coupon.index') }}";
+
+                        $("#code").removeClass('is-invalid')
                             .siblings('p')
                             .removeClass("invalid-feedback").html('');
-                        $("#slug").removeClass('is-invalid')
+                        $("#discount_amount").removeClass('is-invalid')
+                            .siblings('p')
+                            .removeClass("invalid-feedback").html('');
+                        $("#starts_at").removeClass('is-invalid')
+                            .siblings('p')
+                            .removeClass("invalid-feedback").html('');
+                        $("#expires_at").removeClass('is-invalid')
                             .siblings('p')
                             .removeClass("invalid-feedback").html('');
                     } else {
                         var errors = response['errors'];
-                        if (errors['name']) {
-                            $("#name").addClass('is-invalid')
+                        if (errors['code']) {
+                            $("#code").addClass('is-invalid')
                                 .siblings('p')
-                                .addClass("invalid-feedback").html(errors['name']);
+                                .addClass("invalid-feedback").html(errors['code']);
+                        } else {
+                            $("#code").removeClass('is-invalid')
+                                .siblings('p')
+                                .removeClass("invalid-feedback").html('');
                         }
-                        if (errors['slug']) {
-                            $("#slug").addClass('is-invalid')
+                        if (errors['discount_amount']) {
+                            $("#discount_amount").addClass('is-invalid')
                                 .siblings('p')
-                                .addClass("invalid-feedback").html(errors['slug']);
+                                .addClass("invalid-feedback").html(errors['discount_amount']);
+                        } else {
+                            $("#discount_amount").removeClass('is-invalid')
+                                .siblings('p')
+                                .removeClass("invalid-feedback").html('');
+                        }
+                        if (errors['starts_at']) {
+                            $("#starts_at").addClass('is-invalid')
+                                .siblings('p')
+                                .addClass("invalid-feedback").html(errors['starts_at']);
+                        } else {
+                            $("#starts_at").removeClass('is-invalid')
+                                .siblings('p')
+                                .removeClass("invalid-feedback").html('');
+                        }
+                        if (errors['expires_at']) {
+                            $("#expires_at").addClass('is-invalid')
+                                .siblings('p')
+                                .addClass("invalid-feedback").html(errors['expires_at']);
+                        } else {
+                            $("#expires_at").removeClass('is-invalid')
+                                .siblings('p')
+                                .removeClass("invalid-feedback").html('');
                         }
                     }
                 },
                 error: function(jqXHR, exception) {
                     console.log("Something went wrong");
                 }
-            })
-        });
-
-        //Get slug autometically
-        $("#name").change(function() {
-            element = $(this);
-            $("button[type=submit]").prop('disabled', true);
-            $.ajax({
-                url: "{{ route('getSlug') }}",
-                type: 'get',
-                data: {
-                    title: element.val()
-                },
-                dataType: 'json',
-                success: function(response) {
-                    $("button[type=submit]").prop('disabled', false);
-                    if (response["status"] == true) {
-                        $('#slug').val(response["slug"]);
-                    }
-                }
             });
-        });
-
-        //Upload image using dropzone
-        Dropzone.autoDiscover = false;
-        const dropzone = $("#image").dropzone({
-            init: function() {
-                this.on('addedFile', function(file) {
-                    if (this.files.length > 1) {
-                        this.removeFile(this.files[0]);
-                    }
-                });
-            },
-            url: '{{ route('temp-images.create') }}',
-            maxFiles: 1,
-            paramName: 'image',
-            addRemoveLinks: true,
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(file, response) {
-                $("#image_id").val(response.image_id);
-            }
         });
     </script>
 @endsection

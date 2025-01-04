@@ -124,7 +124,7 @@
                                 .siblings('p')
                                 .addClass("invalid-feedback").html(errors['country_id']);
                         } else {
-                            $("#country_id").addClass('is-invalid')
+                            $("#country_id").removeClass('is-invalid')
                                 .siblings('p')
                                 .removeClass("invalid-feedback").html('');
                         }
@@ -133,7 +133,7 @@
                                 .siblings('p')
                                 .addClass("invalid-feedback").html(errors['amount']);
                         } else {
-                            $("#amount").addClass('is-invalid')
+                            $("#amount").removeClass('is-invalid')
                                 .siblings('p')
                                 .removeClass("invalid-feedback").html('');
                         }
