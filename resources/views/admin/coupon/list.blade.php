@@ -91,7 +91,7 @@
 
                                         </td>
                                         <td>
-                                            <a href="{{ route('categories.edit', $discountCoupon->id) }}">
+                                            <a href="{{ route('coupon.edit', $discountCoupon->id) }}">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="currentColor" aria-hidden="true">
@@ -100,7 +100,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="#" onclick= "deleteCategory({{ $discountCoupon->id }})"
+                                            <a href="#" onclick= "deleteCoupons({{ $discountCoupon->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -128,13 +128,6 @@
                 </div>
                 <div class="card-footer clearfix">
                     {{ $discountCoupons->links() }}
-                    {{-- <ul class="pagination pagination m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul> --}}
                 </div>
             </div>
         </div>
@@ -145,8 +138,8 @@
 
 @section('customjs')
     <script>
-        function deleteCategory(id) {
-            var url = "{{ route('categories.delete', 'ID') }}";
+        function deleteCoupons(id) {
+            var url = "{{ route('coupon.delete', 'ID') }}";
             var newUrl = url.replace("ID", id);
 
             if (confirm("Do you want to delete?")) {
@@ -160,7 +153,7 @@
                     },
                     success: function(response) {
                         if (response['status']) {
-                            window.location.href = "{{ route('categories.index') }}"
+                            window.location.href = "{{ route('coupon.index') }}"
                         }
                     }
                 });

@@ -120,10 +120,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/coupon', [DiscountCouponController::class, 'index'])->name('coupon.index');
         Route::get('/coupon/create', [DiscountCouponController::class, 'create'])->name('coupon.create');
         Route::post('/coupon', [DiscountCouponController::class, 'store'])->name('coupon.store');
-        // Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-        // Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-        // Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
-        // Route::post('/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
+        Route::get('/coupon/{id}', [DiscountCouponController::class, 'edit'])->name('coupon.edit');
+        Route::put('/coupon/{id}', [DiscountCouponController::class, 'update'])->name('coupon.update');
+        Route::delete('/coupon/{id}', [DiscountCouponController::class, 'destroy'])->name('coupon.delete');
 
 
 

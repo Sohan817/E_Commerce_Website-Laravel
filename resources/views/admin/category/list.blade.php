@@ -114,13 +114,6 @@
                 </div>
                 <div class="card-footer clearfix">
                     {{ $categories->links() }}
-                    {{-- <ul class="pagination pagination m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul> --}}
                 </div>
             </div>
         </div>
@@ -134,7 +127,6 @@
         function deleteCategory(id) {
             var url = "{{ route('categories.delete', 'ID') }}";
             var newUrl = url.replace("ID", id);
-
             if (confirm("Do you want to delete?")) {
                 $.ajax({
                     url: newUrl,
