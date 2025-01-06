@@ -145,6 +145,10 @@
                                     <div class="h6"><strong>Subtotal</strong></div>
                                     <div class="h6"><strong>${{ Cart::subtotal() }}</strong></div>
                                 </div>
+                                <div class="d-flex justify-content-between summery-end">
+                                    <div class="h6"><strong>Discount</strong></div>
+                                    <div class="h6"><strong id="discount_value">${{ $discount }}</strong></div>
+                                </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
                                     <div class="h6"><strong
@@ -158,6 +162,12 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="input-group apply-coupan mt-4">
+                            <input type="text" placeholder="Coupon Code" class="form-control" name ="discount_code"
+                                id="discount_code">
+                            <button class="btn btn-dark" type="button" id="apply_discount">Apply Coupon</button>
                         </div>
 
                         <div class="card payment-form ">
@@ -195,8 +205,6 @@
                                 <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
                             </div>
                         </div>
-
-
                         <!-- CREDIT CARD FORM ENDS HERE -->
 
                     </div>
@@ -320,6 +328,24 @@
                     if (response.status == true) {
                         $("#shippingCharge").html('$' + response.shippingCharge);
                         $("#grandTotal").html('$' + response.grandTotal);
+                    }
+                }
+            });
+        });
+        $("#apply_discount").click(function() {
+            $.ajax({
+                url: '{{ route('front.apply-discount') }}',
+                type: 'post',
+                data: {
+                    code: $("#discount_code").val(),
+                    country_id: $("#country_id").val()
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true) {
+                        $("#shippingCharge").html('$' + response.shippingCharge);
+                        $("#grandTotal").html('$' + response.grandTotal);
+                        $("#discount_value").html('$' + response.discount);
                     }
                 }
             });
