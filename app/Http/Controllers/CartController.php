@@ -148,6 +148,19 @@ class CartController extends Controller
         session()->forget('url.intended');
         $countries = Country::orderBy('name', 'ASC')->get();
 
+        $subTotal = Cart::subtotal(2, '.', '');
+
+        //Calculate discount here
+        $discount = 0;
+        if (session()->has('code')) {
+            $code = session()->get('code');
+            if ($code->type == 'percent') {
+                $discount = ($code->discount_amount / 100) * $subTotal;
+            } else {
+                $discount = $code->discount_amount;
+            }
+        }
+
         //Shipping calculate here
         if ($customerAddress != '') {
             $userCountry = $customerAddress->country_id;
@@ -161,9 +174,9 @@ class CartController extends Controller
                 $totalQty += $item->qty;
             }
             $totalShippingCharges = $totalQty * $shippingInfo->amount;
-            $grandTotal = Cart::subtotal(2, '.', '') + $totalShippingCharges;
+            $grandTotal = ($subTotal - $discount) + $totalShippingCharges;
         } else {
-            $grandTotal = Cart::subtotal(2, '.', '');
+            $grandTotal = ($subTotal - $discount);
             $totalShippingCharges = 0;
         }
 
@@ -281,8 +294,10 @@ class CartController extends Controller
     public function getOrderSummary(Request $request)
     {
         $subTotal = Cart::subtotal(2, '.', '');
+
         //Calculate discount here
         $discount = 0;
+        $removeDiscount = '';
         if (session()->has('code')) {
             $code = session()->get('code');
             if ($code->type == 'percent') {
@@ -290,6 +305,11 @@ class CartController extends Controller
             } else {
                 $discount = $code->discount_amount;
             }
+            $removeDiscount = ' <div class="mt-4" id="discount_response">
+                                <strong>' . session()->get('code')->code . '</strong>
+                                <a class="btn btn-sm btn-danger" id="remove_discount"><i class="fa fa-times"></i>
+                                </a>
+                            </div>';
         }
         if ($request->country_id > 0) {
             $subTotal = Cart::subtotal(2, '.', '');
@@ -305,6 +325,7 @@ class CartController extends Controller
                     'status' => true,
                     'grandTotal' => number_format($grandTotal, 2),
                     'discount' => $discount,
+                    'removeDiscount' => $removeDiscount,
                     'shippingCharge' => number_format($shippingCharge, 2),
                 ]);
             } else {
@@ -315,6 +336,7 @@ class CartController extends Controller
                     'status' => true,
                     'grandTotal' => number_format($grandTotal, 2),
                     'discount' => $discount,
+                    'removeDiscount' => $removeDiscount,
                     'shippingCharge' => number_format($shippingCharge, 2),
                 ]);
             }
@@ -323,6 +345,7 @@ class CartController extends Controller
                 'status' => true,
                 'grandTotal' => Cart::subtotal(2, '.', '') - ($discount),
                 'discount' => $discount,
+                'removeDiscount' => $removeDiscount,
                 'shippingCharge' => number_format(0, 2)
             ]);
         }
@@ -367,8 +390,13 @@ class CartController extends Controller
                 ]);
             }
         }
-
         session()->put('code', $code);
+        return $this->getOrderSummary($request);
+    }
+    //Remove discount coupons
+    public function removeCoupon(Request $request)
+    {
+        session()->forget('code');
         return $this->getOrderSummary($request);
     }
 }
