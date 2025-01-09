@@ -356,6 +356,9 @@
                         $("#grandTotal").html('$' + response.grandTotal);
                         $("#discount_value").html('$' + response.discount);
                         $("#discount_response_wrapper").html(response.removeDiscount);
+                    } else {
+                        $("#discount_response_wrapper").html("<span class='text-danger'>" + response
+                            .message + "</span>");
                     }
                 }
             });

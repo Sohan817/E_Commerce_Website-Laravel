@@ -345,7 +345,7 @@ class CartController extends Controller
                 return response()->json([
                     'status' => true,
                     'grandTotal' => number_format($grandTotal, 2),
-                    'discount' => $discount,
+                    'discount' => number_format($discount, 2),
                     'removeDiscount' => $removeDiscount,
                     'shippingCharge' => number_format($shippingCharge, 2),
                 ]);
@@ -356,7 +356,7 @@ class CartController extends Controller
                 return response()->json([
                     'status' => true,
                     'grandTotal' => number_format($grandTotal, 2),
-                    'discount' => $discount,
+                    'discount' => number_format($discount, 2),
                     'removeDiscount' => $removeDiscount,
                     'shippingCharge' => number_format($shippingCharge, 2),
                 ]);
@@ -365,7 +365,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => true,
                 'grandTotal' => Cart::subtotal(2, '.', '') - ($discount),
-                'discount' => $discount,
+                'discount' => number_format($discount, 2),
                 'removeDiscount' => $removeDiscount,
                 'shippingCharge' => number_format(0, 2)
             ]);
@@ -411,6 +411,40 @@ class CartController extends Controller
                 ]);
             }
         }
+
+        //Max coupons code used
+        if ($code->max_uses > 0) {
+            $couponsUsed = Order::where('cupon_code_id', $code->id)->count();
+            if ($couponsUsed >= $code->max_uses) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Promo code used limit is over'
+                ]);
+            }
+        }
+
+        //Max uses user check
+        if ($code->max_uses_user > 0) {
+            $couponsUsedByUser = Order::where(['cupon_code_id' => $code->id, 'user_id' => Auth::user()->id])->count();
+            if ($couponsUsedByUser >= $code->max_uses_user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You have already used this Promo code'
+                ]);
+            }
+        }
+
+        //Minimum amount condition check
+        $subTotal = Cart::subtotal(2, '.', '');
+        if ($code->min_amount > 0) {
+            if ($code->min_amount >= $subTotal) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Your minimum amount must be $' . $code->min_amount
+                ]);
+            }
+        }
+
         session()->put('code', $code);
         return $this->getOrderSummary($request);
     }
