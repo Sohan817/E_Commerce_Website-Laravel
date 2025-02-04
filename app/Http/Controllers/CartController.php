@@ -231,7 +231,7 @@ class CartController extends Controller
 
         //Store data in order table
         if ($request->payment_method == 'cod') {
-            $discountCodeId = '';
+            $discountCodeId = Null;
             $promoCode = '';
             $shipping = 0;
             $discount = 0;
@@ -274,6 +274,8 @@ class CartController extends Controller
             $order->cupon_code_id = $discountCodeId;
             $order->cupon_code = $promoCode;
             $order->grand_total = $grandTotal;
+            $order->payment_status = 'not paid';
+            $order->status = 'pending';
             $order->user_id = $user->id;
             $order->first_name = $request->first_name;
             $order->last_name = $request->last_name;

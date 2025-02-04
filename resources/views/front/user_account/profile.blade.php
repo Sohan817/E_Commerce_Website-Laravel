@@ -20,7 +20,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="h5 mb-0 pt-2 pb-2">Personal Information</h2>
+                            <h2 class="h5 mb-0 pt-2 pb-2">My Profile</h2>
                         </div>
                         <div class="card-body p-4">
                             <div class="row">
