@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\admin\HomeController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
@@ -128,7 +129,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/coupon/{id}', [DiscountCouponController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/{id}', [DiscountCouponController::class, 'destroy'])->name('coupon.delete');
 
-
+        //Orders routes
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
 
         Route::get('/getSlug', function (Request $request) {
             $slug = '';
