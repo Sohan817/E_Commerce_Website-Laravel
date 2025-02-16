@@ -38,4 +38,17 @@ class OrderController extends Controller
 
         return view('admin.orders.detail', $data);
     }
+
+    //Change Order status
+    public function changeOrderStatus(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+        $order->status = $request->status;
+        $order->shipping_date = $request->shipping_date;
+        $order->save();
+
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 }
