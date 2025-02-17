@@ -34,6 +34,12 @@ use Illuminate\Support\Str;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+//Email routes
+Route::get('/test', function () {
+    orderEmail(46);
+});
+
 //Frontend routes
 Route::get('/', [FrontController::class, 'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}', [ShopController::class, 'index'])->name('front.shop');
@@ -65,8 +71,6 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('user_account.logout');
     });
 });
-
-Route::get('/test', [CategoryController::class, 'test']);
 
 //Admin auth routes
 Route::group(['prefix' => 'admin'], function () {
