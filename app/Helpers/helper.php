@@ -2,6 +2,7 @@
 
 use App\Mail\OrderEmail;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Order;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Mail;
@@ -27,4 +28,9 @@ function orderEmail($orderId)
     ];
 
     Mail::to($order->email)->send(new OrderEmail($mailData));
+}
+
+function getCountry($id)
+{
+    return Country::where('id', $id)->first();
 }

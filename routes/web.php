@@ -36,9 +36,9 @@ use Illuminate\Support\Str;
 // });
 
 //Email routes
-Route::get('/test', function () {
-    orderEmail(46);
-});
+// Route::get('/test', function () {
+//     orderEmail(46);
+// });
 
 //Frontend routes
 Route::get('/', [FrontController::class, 'index'])->name('front.home');
