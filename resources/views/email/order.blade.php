@@ -6,8 +6,14 @@
 </head>
 
 <body style="font-family: Arial,Helvetica sans-serif;font-size:16px">
-    <h1>Thank you!Your order placed successfully</h1>
-    <h2>Your order Id is: #{{ $mailData['order']->id }}</h2>
+    @if ($mailData['userType'] == 'customer')
+        <h1>Thank you!Your order placed successfully</h1>
+        <h2>Your order Id is: #{{ $mailData['order']->id }}</h2>
+    @else
+        <h1>You have received an order</h1>
+        <h2>Order Id is: #{{ $mailData['order']->id }}</h2>
+    @endif
+
     <h2>Products</h2>
     <div class="row">
         <div class="col-md-9">

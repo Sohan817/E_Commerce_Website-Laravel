@@ -137,6 +137,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
         Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
+        Route::post('/order/send-email/{id}', [OrderController::class, 'sendEnvoiceEmail'])->name('orders.sendEnvoiceEmail');
 
         Route::get('/getSlug', function (Request $request) {
             $slug = '';

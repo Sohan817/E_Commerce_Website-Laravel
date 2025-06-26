@@ -303,7 +303,7 @@ class CartController extends Controller
             }
 
             //SEnt order email
-            orderEmail($order->id);
+            orderEmail($order->id, 'customer');
 
             session()->flash('Success', "Your order placed succesfully");
 

@@ -7,7 +7,7 @@
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Online Shop</title>
+    <title>One Click Shop</title>
     <meta name="description" content="" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
@@ -59,7 +59,7 @@
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
                     <a href="{{ route('front.home') }}" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
+                        <span class="h1 text-uppercase text-primary bg-dark px-2">One Click</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
                     </a>
                 </div>
@@ -88,7 +88,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-xl" id="navbar">
                 <a href="index.php" class="text-decoration-none mobile-logo">
-                    <span class="h2 text-uppercase text-primary bg-dark">Online</span>
+                    <span class="h2 text-uppercase text-primary bg-dark">One Click</span>
                     <span class="h2 text-uppercase text-white px-2">SHOP</span>
                 </a>
                 <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse"

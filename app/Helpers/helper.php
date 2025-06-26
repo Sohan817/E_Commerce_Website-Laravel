@@ -18,17 +18,28 @@ function getProductImage($poductId)
     return ProductImage::where('product_id', $poductId)->first();
 }
 
-function orderEmail($orderId)
+
+function orderEmail($orderId, $userType)
 {
     $order = Order::where('id', $orderId)->with('items')->first();
 
+    if ($userType == "customer") {
+        $subject = "Thank You!Your order has placed successfully";
+        $email = $order->email;
+    } else {
+        $subject = "You have received an order";
+        $email = env('ADMIN_EMAIL', "admin@gmail.com");
+    }
+
     $mailData = [
-        'subject' => 'Thank You!Your order has placed successfully',
-        'order' => $order
+        'subject' => $subject,
+        'order' => $order,
+        'userType' => $userType
     ];
 
-    Mail::to($order->email)->send(new OrderEmail($mailData));
+    Mail::to($email)->send(new OrderEmail($mailData));
 }
+
 
 function getCountry($id)
 {
