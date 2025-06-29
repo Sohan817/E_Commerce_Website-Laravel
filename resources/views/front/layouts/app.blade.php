@@ -187,6 +187,31 @@
             </div>
         </div>
     </footer>
+
+    <!-- The wihhlist Modal -->
+    <div class="modal" id="wihhlistModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Success</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('front-assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('front-assets/js/bootstrap.bundle.5.1.3.min.js') }}"></script>
     <script src="{{ asset('front-assets/js/instantpages.5.1.0.min.js') }}"></script>
@@ -228,6 +253,25 @@
                         window.location.href = "{{ route('front.cart') }}";
                     } else {
                         alert(response.message);
+                    }
+                }
+            });
+        }
+
+        function addToWishlist(id) {
+            $.ajax({
+                url: "{{ route('front.addToWishlist') }}",
+                type: 'post',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true) {
+                        $("#wihhlistModal .modal-body").html(response.message);
+                        $("#wihhlistModal").modal('show');
+                    } else {
+                        window.location.href = "{{ route('user_account.login') }}";
                     }
                 }
             });

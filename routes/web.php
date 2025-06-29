@@ -53,6 +53,7 @@ Route::post('/process_checkout', [CartController::class, 'processCheckout'])->na
 Route::post('/get-order-summary', [CartController::class, 'getOrderSummary'])->name('front.getOrderSummary');
 Route::post('/apply-discount', [CartController::class, 'applyDiscount'])->name('front.apply-discount');
 Route::post('/remove-discount', [CartController::class, 'removeCoupon'])->name('front.remove-discount');
+Route::post('/add-to-wishlist', [FrontController::class, 'addToWishlist'])->name('front.addToWishlist');
 Route::get('/thanks/{orderId}', [CartController::class, 'thankYou'])->name('front.thanks');
 
 
