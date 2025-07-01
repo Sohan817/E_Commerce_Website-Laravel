@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -110,5 +111,30 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('user_account.login');
+    }
+    //Wishlists
+    public function wishlist()
+    {
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)->with('product')->get();
+        $data['wishlists'] = $wishlists;
+        return view('front.user_account.wishlist', $data);
+    }
+
+    public function removeFromWishlist(Request $request)
+    {
+        $wishlist = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->first();
+
+        if ($wishlist == null) {
+            session()->flash('Fail', 'Product not found!');
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->delete();
+            session()->flash('Success', 'Product removed successfully!');
+            return response()->json([
+                'status' => true,
+            ]);
+        }
     }
 }
