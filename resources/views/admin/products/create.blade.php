@@ -124,10 +124,10 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="hidden" name="track_quantity" value="No">
-                                                <input class="custom-control-input" type="checkbox" id="track_quantity"
-                                                    name="track_quantity" value="Yes" checked>
-                                                <label for="track_quantity" class="custom-control-label">Track
+                                                <input type="hidden" name="track_qty" value="No">
+                                                <input class="custom-control-input" type="checkbox" id="track_qty"
+                                                    name="track_qty" value="Yes" checked>
+                                                <label for="track_qty" class="custom-control-label">Track
                                                     Quantity</label>
                                             </div>
                                         </div>

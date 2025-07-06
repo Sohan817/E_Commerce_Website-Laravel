@@ -159,10 +159,23 @@
                                         href="javascript:void(0)"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="javascript:void(0);"
-                                            onClick ="addToCart({{ $product->id }});">
-                                            <i class="fa fa-shopping-cart"></i> Add To Cart
-                                        </a>
+                                        @if ($product->track_qty == 'Yes')
+                                            @if ($product->quantity > 0)
+                                                <a class="btn btn-dark" href="javascript:void(0);"
+                                                    onClick ="addToCart({{ $product->id }});">
+                                                    <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                </a>
+                                            @else
+                                                <a class="btn btn-dark" href="javascript:void(0);">
+                                                    Out of Stock!
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a class="btn btn-dark" href="javascript:void(0);"
+                                                onClick ="addToCart({{ $product->id }});">
+                                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-body text-center mt-3">
@@ -208,10 +221,23 @@
                                         href="javascript:void(0)"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="javascript:void(0);"
-                                            onClick ="addToCart({{ $product->id }});">
-                                            <i class="fa fa-shopping-cart"></i> Add To Cart
-                                        </a>
+                                        @if ($product->track_qty == 'Yes')
+                                            @if ($product->quantity > 0)
+                                                <a class="btn btn-dark" href="javascript:void(0);"
+                                                    onClick ="addToCart({{ $product->id }});">
+                                                    <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                </a>
+                                            @else
+                                                <a class="btn btn-dark" href="javascript:void(0);">
+                                                    Out of Stock!
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a class="btn btn-dark" href="javascript:void(0);"
+                                                onClick ="addToCart({{ $product->id }});">
+                                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-body text-center mt-3">

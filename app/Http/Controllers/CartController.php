@@ -83,7 +83,7 @@ class CartController extends Controller
         $product = Product::find($itemInfo->id);
 
         //Check quantity available in the stock
-        if ($product->track_quantity == 'Yes') {
+        if ($product->track_qty == 'Yes') {
             if ($qty <= $product->quantity) {
                 Cart::update($rowId, $qty);
                 $message = 'Cart updated successfully';
@@ -300,6 +300,15 @@ class CartController extends Controller
                 $orderItem->price = $item->price;
                 $orderItem->total = $item->price * $item->qty;
                 $orderItem->save();
+
+                //Update product stock
+                $productData = Product::find($item->id);
+                if ($productData->track_qty == 'Yes') {
+                    $currentQty = $productData->quantity;
+                    $updatedQty = $currentQty - $item->qty;
+                    $productData->quantity = $updatedQty;
+                    $productData->save();
+                }
             }
 
             //SEnt order email

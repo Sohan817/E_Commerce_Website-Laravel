@@ -47,12 +47,12 @@ class ProductController extends Controller
             'slug' => 'required | unique:products',
             'price' => 'required | numeric',
             'sku' => 'required | unique:products',
-            'track_quantity' => 'required | in:Yes,No',
+            'track_qty' => 'required | in:Yes,No',
             'category' => 'required | numeric',
             'is_featured' => 'required | in:Yes,No',
         ];
 
-        if (!empty($request->track_quantity) && $request->track_quantity == "Yes") {
+        if (!empty($request->track_qty) && $request->track_qty == "Yes") {
             $rules['quantity'] = 'required | numeric';
         }
         $validator = Validator::make($request->all(), $rules);
@@ -69,7 +69,7 @@ class ProductController extends Controller
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
             $product->barcode = $request->barcode;
-            $product->track_quantity = $request->track_quantity;
+            $product->track_qty = $request->track_qty;
             $product->quantity = $request->quantity;
             $product->status = $request->status;
             $product->category_id = $request->category;
@@ -175,11 +175,11 @@ class ProductController extends Controller
             'slug' => 'required | unique:products,slug,' . $product->id . ',id',
             'price' => 'required | numeric',
             'sku' => 'required | unique:products,sku,' . $product->id . ',id',
-            'track_quantity' => 'required | in:Yes,No',
+            'track_qty' => 'required | in:Yes,No',
             'category' => 'required | numeric',
             'is_featured' => 'required | in:Yes,No',
         ];
-        if (!empty($request->track_quantity) && $request->track_quantity == "Yes") {
+        if (!empty($request->track_qty) && $request->track_qty == "Yes") {
             $rules['quantity'] = 'required | numeric';
         }
         $validator = Validator::make($request->all(), $rules);
@@ -194,7 +194,7 @@ class ProductController extends Controller
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
             $product->barcode = $request->barcode;
-            $product->track_quantity = $request->track_quantity;
+            $product->track_qty = $request->track_qty;
             $product->quantity = $request->quantity;
             $product->status = $request->status;
             $product->category_id = $request->category;
