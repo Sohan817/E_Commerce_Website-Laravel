@@ -137,9 +137,7 @@ class CartController extends Controller
         }
         //if user is not logged in redirect to login page
         if (Auth::check() == false) {
-            if (!session()->has('url.intended')) {
-                session(['url.intended' => url()->current()]);
-            }
+            session(['url.intended' => url()->current()]);
             return redirect()->route('user_account.login');
         }
 
