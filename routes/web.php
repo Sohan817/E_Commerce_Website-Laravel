@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
@@ -103,7 +104,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/sub-categories/{subCategory}', [SubCategoryController::class, 'update'])->name('sub-categories.update');
         Route::delete('/sub-categories/{subCategory}', [SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
 
-        //Brands Routes
+        //Brand Routes
         Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
         Route::get('/brands/create', [BrandController::class, 'create'])->name('brands.create');
         Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
@@ -138,11 +139,19 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/coupon/{id}', [DiscountCouponController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/{id}', [DiscountCouponController::class, 'destroy'])->name('coupon.delete');
 
-        //Orders routes
+        //Order routes
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
         Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
         Route::post('/order/send-email/{id}', [OrderController::class, 'sendEnvoiceEmail'])->name('orders.sendEnvoiceEmail');
+
+        //User Routes
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+        // Route::get('/brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+        // Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+        // Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brands.delete');
 
         Route::get('/getSlug', function (Request $request) {
             $slug = '';
