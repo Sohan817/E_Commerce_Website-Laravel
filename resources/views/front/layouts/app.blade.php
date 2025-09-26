@@ -154,11 +154,13 @@
                     <div class="footer-card">
                         <h3>Important Links</h3>
                         <ul>
-                            <li><a href="about-us.php" title="About">About</a></li>
-                            <li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>
-                            <li><a href="#" title="Privacy">Privacy</a></li>
-                            <li><a href="#" title="Privacy">Terms & Conditions</a></li>
-                            <li><a href="#" title="Privacy">Refund Policy</a></li>
+                            @if (staticPages()->isNotEmpty())
+                                @foreach (staticPages() as $page)
+                                    <li><a href="{{ route('front.pages', $page->slug) }}"
+                                            title="{{ $page->name }}">{{ $page->name }}</a>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>

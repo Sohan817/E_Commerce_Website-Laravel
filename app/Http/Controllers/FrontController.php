@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
@@ -57,5 +58,14 @@ class FrontController extends Controller
             'status' => true,
             'message' => '<div class = "alert alert-success"><strong> "' . $products->title . '"</strong> Product added on yout wishlist</div>'
         ]);
+    }
+    public function page($slug)
+    {
+        $page = Page::where('slug', $slug)->first();
+        if ($page == null) {
+            abort(404);
+        }
+        $data['page'] = $page;
+        return view('front.page', $data);
     }
 }
