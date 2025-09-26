@@ -66,7 +66,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="#" onclick= "deleteCategory({{ $page->id }})"
+                                            <a href="#" onclick= "deletePage({{ $page->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -104,8 +104,8 @@
 
 @section('customjs')
     <script>
-        function deleteCategory(id) {
-            var url = "{{ route('categories.delete', 'ID') }}";
+        function deletePage(id) {
+            var url = "{{ route('pages.delete', 'ID') }}";
             var newUrl = url.replace("ID", id);
             if (confirm("Do you want to delete?")) {
                 $.ajax({
@@ -118,7 +118,7 @@
                     },
                     success: function(response) {
                         if (response['status']) {
-                            window.location.href = "{{ route('categories.index') }}"
+                            window.location.href = "{{ route('pages.index') }}"
                         }
                     }
                 });
