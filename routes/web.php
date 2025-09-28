@@ -72,6 +72,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/profile', [AuthController::class, 'profile'])->name('user_account.profile');
         Route::post('/update-profile', [AuthController::class, 'updateProfile'])->name('user_account.updateProfile');
         Route::post('/update-profile-address', [AuthController::class, 'updateProfileAddress'])->name('user_account.updateProfileAddress');
+        Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('user_account.showChangePassword');
+        Route::post('/process-change-password', [AuthController::class, 'changePassword'])->name('user_account.changePassword');
         Route::get('/my-orders', [AuthController::class, 'orders'])->name('user_account.orders');
         Route::get('/order-detail/{orderId}', [AuthController::class, 'orderDetail'])->name('user_account.order-detail');
         Route::get('/logout', [AuthController::class, 'logout'])->name('user_account.logout');

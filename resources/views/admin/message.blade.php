@@ -11,8 +11,10 @@
     </script>
 @endif
 @if (Session::has('Fail'))
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" area-hidden = "true">x</button>
-        <h4 <i class="icon fa fa-ban"></i> Error!</h4> {{ Session::get('Fail') }}
+    <div class = "col-md-12">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {!! Session::get('Fail') !!}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" area-label = "Close"></button>
+        </div>
     </div>
 @endif
