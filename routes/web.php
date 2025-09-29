@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
@@ -165,6 +166,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
         Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.delete');
 
+        //Settings Route
+        Route::get('/show-change-password', [SettingController::class, 'showChangePassword'])->name('admin.showChangePassword');
+        Route::post('/change-password', [SettingController::class, 'changePassword'])->name('admin.changePassword');
 
         Route::get('/getSlug', function (Request $request) {
             $slug = '';
