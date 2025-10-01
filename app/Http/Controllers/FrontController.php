@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactEmail;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
@@ -67,5 +71,41 @@ class FrontController extends Controller
         }
         $data['page'] = $page;
         return view('front.page', $data);
+    }
+
+    //Send Contact email
+    public function sendContactEmail(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'email' => 'required|email',
+                'subject' => 'required|min:8'
+            ]
+        );
+        if ($validator->passes()) {
+            $mailData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'mail_subject' => 'You have received a contact email'
+            ];
+
+            $admin = User::where('id', 1)->first();
+
+            Mail::to($admin->email)->send(new ContactEmail($mailData));
+
+            session()->flash('Success', 'Thanks for contacting us.We will get back to you soon.');
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
 }

@@ -59,6 +59,8 @@ Route::post('/remove-discount', [CartController::class, 'removeCoupon'])->name('
 Route::post('/add-to-wishlist', [FrontController::class, 'addToWishlist'])->name('front.addToWishlist');
 Route::get('/thanks/{orderId}', [CartController::class, 'thankYou'])->name('front.thanks');
 Route::get('/pages/{slug}', [FrontController::class, 'page'])->name('front.pages');
+Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
+
 
 
 //User Auth routes
