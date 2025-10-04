@@ -31,9 +31,9 @@
     <section class=" section-10">
         <div class="container">
             <div class="login-form">
-                <form action="{{ route('user_account.loginProcess') }}" method="post">
+                <form action="{{ route('front.forgotPassword') }}" method="post">
                     @csrf
-                    <h4 class="modal-title">Login to Your Account</h4>
+                    <h4 class="modal-title">Forgot Password</h4>
                     <div class="form-group">
                         <input type="text" class="form-control @error('email') is-invalid @enderror" placeholder="Email"
                             name="email" value="{{ old('email') }}">
@@ -41,20 +41,10 @@
                             <p class="invalid-feedback">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            placeholder="Password" name="password">
-                        @error('password')
-                            <p class="invalid-feedback">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="form-group small">
-                        <a href="{{ route('front.showForgotPassword') }}" class="forgot-link">Forgot Password?</a>
-                    </div>
-                    <input type="submit" class="btn btn-dark btn-block btn-lg" value="Login">
+                    <input type="submit" class="btn btn-dark btn-block btn-lg" value="Submit">
                 </form>
-                <div class="text-center small">Don't have an account? <a href="{{ route('user_account.register') }}">Sign
-                        up</a></div>
+                <div class="text-center small"><a href="{{ route('user_account.login') }}">Login</a>
+                </div>
             </div>
         </div>
     </section>

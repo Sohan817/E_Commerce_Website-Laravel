@@ -61,6 +61,10 @@ Route::get('/thanks/{orderId}', [CartController::class, 'thankYou'])->name('fron
 Route::get('/pages/{slug}', [FrontController::class, 'page'])->name('front.pages');
 Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
 
+//Forgot Password routes
+Route::get('/show-forgot-password', [AuthController::class, 'showForgotPassword'])->name('front.showForgotPassword');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('front.resetPassword');
 
 
 //User Auth routes
