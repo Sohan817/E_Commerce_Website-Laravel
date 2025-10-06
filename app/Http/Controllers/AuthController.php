@@ -290,6 +290,9 @@ class AuthController extends Controller
         }
         //Save email and token into db
         $token = Str::random(60);
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
         DB::table('password_reset_tokens')->insert([
             'email' => $request->email,
             'token' => $token,
@@ -308,5 +311,44 @@ class AuthController extends Controller
         return redirect()->route('front.showForgotPassword')->with('Success', 'Please check your email to reset your password');
     }
 
-    public function resetPassword() {}
+    public function resetPassword($token)
+    {
+        $tokenExist = DB::table('password_reset_tokens')->where('token', $token)->first();
+
+        if ($tokenExist == null) {
+            return redirect()->route('front.showForgotPassword')->with('Fail', 'Invalid request');
+        }
+        $data['token'] = $token;
+        return view('front.user_account.reset-password', $data);
+    }
+
+    public function processResetPassword(Request $request)
+    {
+        $token = $request->token;
+        $tokenobj = DB::table('password_reset_tokens')->where('token', $token)->first();
+
+        if ($tokenobj == null) {
+            return redirect()->route('front.showForgotPassword')->with('Fail', 'Invalid request');
+        }
+        $user = User::where('email', $tokenobj->email)->first();
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'new_password' => 'required|min:5',
+                'confirm_password' => 'required | same:new_password'
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->route('front.resetPassword', $token)->withErrors($validator);
+        }
+        User::where('id', $user->id)->update(
+            [
+                'password' => Hash::make($request->new_password)
+            ]
+        );
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return redirect()->route('user_account.login')->with('Success', 'You have successfully reset your password');
+    }
 }

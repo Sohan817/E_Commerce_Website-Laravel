@@ -65,6 +65,7 @@ Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])
 Route::get('/show-forgot-password', [AuthController::class, 'showForgotPassword'])->name('front.showForgotPassword');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('front.resetPassword');
+Route::post('/process-reset-password', [AuthController::class, 'processResetPassword'])->name('front.processResetPassword');
 
 
 //User Auth routes
