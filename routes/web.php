@@ -60,6 +60,8 @@ Route::post('/add-to-wishlist', [FrontController::class, 'addToWishlist'])->name
 Route::get('/thanks/{orderId}', [CartController::class, 'thankYou'])->name('front.thanks');
 Route::get('/pages/{slug}', [FrontController::class, 'page'])->name('front.pages');
 Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
+Route::post('/store-rating/{productId}', [ShopController::class, 'storeProductRating'])->name('front.storeProductRating');
+
 
 //Forgot Password routes
 Route::get('/show-forgot-password', [AuthController::class, 'showForgotPassword'])->name('front.showForgotPassword');
