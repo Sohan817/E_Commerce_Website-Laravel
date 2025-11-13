@@ -7,8 +7,10 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use App\Models\TempImage;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -264,6 +266,32 @@ class ProductController extends Controller
         }
         return response()->json([
             'tags' => $temProducts,
+            'status' => true
+        ]);
+    }
+
+    //Product Rating
+    public function productRating(Request $request)
+    {
+        $ratings = ProductRating::select('product_ratings.*', 'products.title as product_title')->orderBy('created_at', 'DESC');
+        $ratings = $ratings->leftJoin('products', 'products.id', 'product_ratings.product_id');
+        if (!empty($request->get('keyword'))) {
+            $ratings = $ratings->orWhere('products.title', 'like', '%' . $request->get('keyword') . '%');
+            $ratings = $ratings->orWhere('product_ratings.username', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $ratings = $ratings->paginate(10);
+        $data['ratings'] =   $ratings;
+        return view('admin.products.rating', $data);
+    }
+
+    public function changeRatingStatus(Request $request)
+    {
+        $productRating = ProductRating::find($request->id);
+        $productRating->status = $request->status;
+        $productRating->save();
+
+        session()->flash('Success', 'Status changed successfully');
+        return response()->json([
             'status' => true
         ]);
     }
